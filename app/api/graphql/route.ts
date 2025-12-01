@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase-auth-client';
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,12 +17,12 @@ export async function POST(req: NextRequest) {
     const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : undefined;
 
     // If there's a token, set it in the Supabase client
-    if (token) {
-      supabase.auth.setSession({
-        access_token: token,
-        refresh_token: '',
-      });
-    }
+    // if (token) {
+    //   supabase.auth.setSession({
+    //     access_token: token,
+    //     refresh_token: '',
+    //   });
+    // }
     // Execute the GraphQL query using Supabase's REST API
     const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/graphql/v1`, {
       method: 'POST',
