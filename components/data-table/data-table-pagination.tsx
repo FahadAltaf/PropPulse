@@ -35,12 +35,28 @@ export function DataTablePagination<TData>({
 }: DataTablePaginationProps<TData>) {
   const totalRows = rowCount;
   const pageCount = Math.ceil(totalRows / pageSize);
+  const startRow = totalRows === 0 ? 0 : pageIndex * pageSize + 1;
+  const endRow = Math.min((pageIndex + 1) * pageSize, totalRows);
 
   return (
-    <div className="flex items-center justify-between px-2">
-      <div className="flex-1 md:text-sm  text-xs">Total Row {rowCount}</div>
-      <div className="flex items-center space-x-6 lg:space-x-8">
-        <div className="md:flex items-center space-x-2 hidden">
+    <div className="flex flex-row gap-3 px-2 items-center justify-between">
+      <div className="text-[11px] text-muted-foreground sm:text-xs md:text-sm">
+        {totalRows === 0 ? (
+          "No records found"
+        ) : (
+          <>
+            Showing{" "}
+            <span className="font-medium text-foreground">
+              {startRow}–{endRow}
+            </span>{" "}
+            of{" "}
+            <span className="font-semibold text-foreground">{totalRows}</span>{" "}
+            rows
+          </>
+        )}
+      </div>
+      <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:justify-end sm:space-x-4 lg:space-x-6">
+        <div className="hidden items-center space-x-2 md:flex">
           <p className="text-sm font-medium">Rows per page</p>
           <Select
             value={`${pageSize}`}
@@ -61,13 +77,17 @@ export function DataTablePagination<TData>({
             </SelectContent>
           </Select>
         </div>
-        <div className="flex w-[180px] items-center justify-center md:text-sm text-xs font-medium">
-          Page {pageIndex + 1} of {pageCount}
+        <div className="hidden md:flex items-center justify-center text-[11px] font-medium text-muted-foreground sm:text-xs md:text-sm">
+          Page{" "}
+          <span className="mx-1 min-w-[2ch] text-center text-foreground">
+            {pageCount === 0 ? 0 : pageIndex + 1}
+          </span>
+          of <span className="ml-1 text-foreground">{pageCount}</span>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center justify-center space-x-1 sm:space-x-2">
           <Button
             variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
+            className="h-8 w-8 p-0 "
             onClick={() => {
               onPageChange(0);
             }}
@@ -100,7 +120,7 @@ export function DataTablePagination<TData>({
           </Button>
           <Button
             variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
+            className=" h-8 w-8 p-0 "
             onClick={() => {
               onPageChange(pageCount - 1);
             }}

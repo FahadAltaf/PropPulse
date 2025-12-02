@@ -118,7 +118,7 @@ export default function SettingsDialog() {
                         />
                       )}
                       <span className="hidden xs:inline">{item.name}</span>
-                      <span className="xs:hidden text-[10px]">{item.name}</span>
+                      <span className="xs:hidden text-[13px]">{item.name}</span>
                     </TabsTrigger>
                   ))}
                 </TabsList>

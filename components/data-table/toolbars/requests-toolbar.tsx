@@ -36,9 +36,10 @@ export function RequestsDataTableToolbar<TData>({
 
   return (
     <>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-row gap-3 sm:flex-row sm:items-center sm:justify-between">
+        {/* Search + Reset */}
         <div className="flex flex-1 items-center space-x-2">
-          <div className="relative w-1/2">
+          <div className="relative w-full sm:w-1/2">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search..."
@@ -61,39 +62,41 @@ export function RequestsDataTableToolbar<TData>({
             </Button>
           )}
         </div>
-        {tableName && (
-          <div className="px-2">
+        {/* Actions */}
+        <div className="flex flex-wrap items-center gap-2 sm:justify-end">
+          {tableName && (
             <Button
               variant="outline"
               size="sm"
-              className="ml-auto hidden h-8 lg:flex"
+              className="h-8 gap-1 text-xs sm:text-sm"
               onClick={onExport}
             >
-              <Download className="p-1" />
-              Export
+              <Download className="h-4 w-4" />
+              <span className="hidden xs:inline">Export</span>
             </Button>
-          </div>
-        )}
-        <div className="px-2">
+          )}
           <Button
             variant="outline"
             size="sm"
             onClick={onRefresh}
-            className="ml-auto hidden h-8 lg:flex"
+            className="h-8 gap-3 text-xs sm:text-sm"
           >
-            <RefreshCcw className="mr-2 h-4 w-4" /> Refresh
+            <RefreshCcw className="h-4 w-4" />
+            <span className="hidden sm:inline!">Refresh</span>
           </Button>
-        </div>
-        {table && <DataTableViewOptions table={table} />}
-        <div className="pl-2">
+          {table && (
+            <div className="hidden sm:block">
+              <DataTableViewOptions table={table} />
+            </div>
+          )}
           <Button
             variant="default"
             size="sm"
-            className="ml-auto h-8"
+            className="h-8 gap-3 text-xs sm:text-sm"
             onClick={() => setIsRegisterInterestOpen(true)}
           >
-            <Sparkles className="mr-1 h-4 w-4" />
-            Request Interest
+            <Sparkles className="h-4 w-4" />
+            <span className="hidden sm:block!">Request Interest</span>
           </Button>
         </div>
       </div>

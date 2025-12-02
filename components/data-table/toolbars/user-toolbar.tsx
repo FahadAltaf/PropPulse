@@ -3,7 +3,7 @@
 import type { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
-import { Download, Plus, RefreshCcw, X, Search } from "lucide-react";
+import { Download, Plus, RefreshCcw, X, Search, UserPlus } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import AddUser from "@/components/(dashboard)/user/component/add-user";
@@ -41,78 +41,77 @@ export function UserDataTableToolbar<TData>({
 
   const isFiltered = globalFilter !== "";
   return (
-    <div className="flex items-center justify-between ">
-      <div className="flex flex-1 items-center space-x-2 ">
-        <div className="relative w-1/2">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search By Name or Email"
-            value={globalFilter}
-            onChange={handleFilterChange}
-            className="h-8 pl-8 w-full focus-visible:ring-0"
-          />
+    <>
+      <div className="flex flex-row gap-3 sm:flex-row sm:items-center sm:justify-between">
+        {/* Search + Reset */}
+        <div className="flex flex-1 items-center space-x-2">
+          <div className="relative w-full sm:w-1/2">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search..."
+              value={globalFilter}
+              onChange={handleFilterChange}
+              className="h-8 pl-8 w-full focus-visible:ring-0"
+            />
+          </div>
+          {isFiltered && (
+            <Button
+              variant="ghost"
+              onClick={() => {
+                onGlobalFilterChange?.("");
+                setGlobalFilter("");
+              }}
+              className="h-8 px-2 lg:px-3"
+            >
+              Reset
+              <X className="ml-2 h-4 w-4" />
+            </Button>
+          )}
         </div>
-        {isFiltered && (
-          <Button
-            variant="ghost"
-            onClick={() => {
-              onGlobalFilterChange?.("");
-              setGlobalFilter("");
-            }}
-            className="h-8 px-2 lg:px-3"
-          >
-            Reset
-            <X className="ml-2 h-4 w-4" />
-          </Button>
-        )}
-      </div>{" "}
-      {tableName && ( // Conditionally render export button
-        <div className="px-2">
+        {/* Actions */}
+        <div className="flex flex-wrap items-center gap-2 sm:justify-end">
+          {tableName && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 gap-1 text-xs sm:text-sm"
+              onClick={onExport}
+            >
+              <Download className="h-4 w-4" />
+              <span className="hidden xs:inline">Export</span>
+            </Button>
+          )}
           <Button
             variant="outline"
             size="sm"
-            className="ml-auto hidden h-8 lg:flex"
-            onClick={onExport}
+            onClick={onRefresh}
+            className="h-8 gap-3 text-xs sm:text-sm"
           >
-            <Download className="p-1" />
-            Export
+            <RefreshCcw className="h-4 w-4" />
+            <span className="hidden sm:inline!">Refresh</span>
+          </Button>
+          {table && (
+            <div className="hidden sm:block">
+              <DataTableViewOptions table={table} />
+            </div>
+          )}
+          <Button
+            variant="default"
+            size="sm"
+            className="h-8 gap-3 text-xs sm:text-sm"
+            onClick={() => setIsDialogOpen(true)}
+          >
+            <UserPlus className="h-4 w-4" />
+            <span className="hidden sm:block!">Add User</span>
           </Button>
         </div>
-      )}
-      <div className="px-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={fetchRecords} // Call the onRefresh function
-          className="ml-auto hidden h-8 lg:flex"
-        >
-          <RefreshCcw className="mr-2 h-4 w-4" /> Refresh
-        </Button>
-      </div>
-      {table && <DataTableViewOptions table={table} />}
-      <div className="pl-2">
-        <Button
-          variant="default"
-          size="sm"
-          className="ml-auto h-8"
-          onClick={() => setIsDialogOpen(true)}
-        >
-          <Plus className="mr-1 h-4 w-4" /> Add User
-        </Button>
       </div>
       <AddUser
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
-        onRefresh={fetchRecords}
         listRoles={listRoles}
+        onRefresh={fetchRecords}
       />
-      {/* {isDialogOpen && (
-        // <UserSettingsDialogBox
-        //   open={isDialogOpen}
-        //   onOpenChange={setIsDialogOpen}
-        //   onRefresh={fetchRecords}
-        // />
-      )} */}
-    </div>
+    </>
   );
 }

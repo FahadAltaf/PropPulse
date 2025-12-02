@@ -279,7 +279,7 @@ export default function AddUser({
                             <SelectValue placeholder="Select role" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className="">
                           {listRoles?.map((role) => (
                             <SelectItem
                               key={role.id}
