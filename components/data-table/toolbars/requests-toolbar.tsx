@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
-import { Search, X, Sparkles } from "lucide-react";
+import { Search, X, Sparkles, Download, RefreshCcw } from "lucide-react";
 import RegisterInterestPopup from "@/components/(landing-page)/test/register-interest-popup";
 
 interface RequestsToolbarProps<TData> {
@@ -36,12 +36,12 @@ export function RequestsDataTableToolbar<TData>({
 
   return (
     <>
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex items-center justify-between">
         <div className="flex flex-1 items-center space-x-2">
-          <div className="relative w-full max-w-sm">
+          <div className="relative w-1/2">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search by project or request no."
+              placeholder="Search..."
               value={globalFilter}
               onChange={handleFilterChange}
               className="h-8 pl-8 w-full focus-visible:ring-0"
@@ -61,31 +61,35 @@ export function RequestsDataTableToolbar<TData>({
             </Button>
           )}
         </div>
-
-        <div className="flex items-center gap-2">
-          {tableName && (
+        {tableName && (
+          <div className="px-2">
             <Button
               variant="outline"
               size="sm"
-              className="hidden h-8 lg:flex"
+              className="ml-auto hidden h-8 lg:flex"
               onClick={onExport}
             >
+              <Download className="p-1" />
               Export
             </Button>
-          )}
+          </div>
+        )}
+        <div className="px-2">
           <Button
             variant="outline"
             size="sm"
             onClick={onRefresh}
-            className="hidden h-8 lg:flex"
+            className="ml-auto hidden h-8 lg:flex"
           >
-            Refresh
+            <RefreshCcw className="mr-2 h-4 w-4" /> Refresh
           </Button>
-          {table && <DataTableViewOptions table={table} />}
+        </div>
+        {table && <DataTableViewOptions table={table} />}
+        <div className="pl-2">
           <Button
             variant="default"
             size="sm"
-            className="h-8"
+            className="ml-auto h-8"
             onClick={() => setIsRegisterInterestOpen(true)}
           >
             <Sparkles className="mr-1 h-4 w-4" />
@@ -101,5 +105,3 @@ export function RequestsDataTableToolbar<TData>({
     </>
   );
 }
-
-

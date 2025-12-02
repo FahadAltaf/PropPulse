@@ -3,6 +3,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
+import { Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export interface RequestRecord {
   id: string;
@@ -60,21 +62,19 @@ export function getRequestColumns(): ColumnDef<RequestRecord>[] {
       ),
       enableSorting: true,
     },
+
     {
-      accessorKey: "lastAction",
+      accessorKey: "status",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Last Action" />
+        <DataTableColumnHeader column={column} title="Action" />
       ),
       cell: ({ row }) => (
-        <Badge variant="outline" className="text-xs font-medium">
-          {row.original.lastAction}
-        </Badge>
+        <Button variant="outline" size="icon">
+          <Download className="h-3 w-3" />
+        </Button>
       ),
-      enableSorting: false,
     },
   ];
 
   return columns;
 }
-
-

@@ -90,7 +90,7 @@ export default function Page() {
 
   return (
     <div className="flex flex-1 flex-col gap-4 py-4 md:gap-6 md:py-6 h-[calc(100vh-62px)]">
-      <div className="flex flex-col">
+      <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
         <DataTable
           data={data}
           toolbar={<RequestsDataTableToolbar />}
@@ -108,7 +108,7 @@ export default function Page() {
         />
       </div>
 
-      <Card className="mt-auto  bg-linear-to-br from-primary/5 via-background to-background border border-border/60">
+      {/* <Card className="mt-auto  bg-linear-to-br from-primary/5 via-background to-background border border-border/60">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0">
           <div className="space-y-1">
             <CardTitle className="text-base font-semibold">
@@ -146,7 +146,7 @@ export default function Page() {
 
           <Progress value={usedPercent} className="h-2" />
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 }
