@@ -8,6 +8,8 @@ import {
   Ban,
   CheckCircle,
   KeyRound,
+  MoreHorizontal,
+  EllipsisVertical,
 } from "lucide-react";
 import { Row } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
@@ -105,13 +107,15 @@ export function UserTableRowActions({
   return (
     <>
       <DropdownMenu>
+        {/* On mobile, show icon + text as button, on desktop show icon button only */}
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="flex h-8 w-8 p-0 data-[state=open]:bg-muted cursor-pointer"
+            className="flex h-8 w-auto min-w-[2rem] w-8 sm:min-w-0 px-0 p-0 data-[state=open]:bg-muted cursor-pointer gap-2 sm:border-none border"
           >
-            <Ellipsis className="h-4 w-4" />
-            <span className="sr-only">Open menu</span>
+            <Ellipsis className="h-4 w-4 hidden sm:block" />
+            <EllipsisVertical className="h-4 w-4 block sm:hidden" />
+            {/* <span className="text-xs font-medium sm:sr-only">Menu</span> */}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-max">

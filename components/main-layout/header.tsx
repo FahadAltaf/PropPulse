@@ -60,7 +60,7 @@ export default function Header({ title, url }: { title: string; url: string }) {
               className="gap-2"
             >
               <Coins className="h-4 w-4" />
-              <span className="hidden sm:inline">Credits: 0</span>
+              <span className="inline">Credits: 0</span>
             </Button>
           </div>
         </div>
@@ -68,7 +68,7 @@ export default function Header({ title, url }: { title: string; url: string }) {
 
       <Dialog open={isCreditsOpen} onOpenChange={setIsCreditsOpen}>
         <DialogContent>
-          <DialogHeader>
+          <DialogHeader className="sm:items-start items-center">
             <DialogTitle className="flex items-center gap-2">
               <Coins className="h-5 w-5" />
               Credits Information

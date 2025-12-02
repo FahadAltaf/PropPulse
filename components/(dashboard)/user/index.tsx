@@ -5,6 +5,7 @@ import { getUserColumns } from "@/components/data-table/columns/column-user";
 import { UserDataTableToolbar } from "@/components/data-table/toolbars/user-toolbar";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
+import { UserTableRowActions } from "@/components/data-table/actions/user-actions";
 import { usersService } from "@/modules/users/services/users-service";
 import { User, Role } from "@/types/types";
 import { rolesService } from "@/modules/roles/services/roles-service";
@@ -16,7 +17,15 @@ import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { currentTimezone } from "@/lib/helper/current-timezone";
 import { generateNameAvatar } from "@/utils/generateRandomAvatar";
-import { Mail, BadgeCheck, Clock3, CalendarDays } from "lucide-react";
+import {
+  Mail,
+  BadgeCheck,
+  Clock3,
+  CalendarDays,
+  MoreHorizontal,
+  SquarePen,
+} from "lucide-react";
+import type { Row } from "@tanstack/react-table";
 
 export default function UserManagementPage({ type }: { type: string }) {
   const [listUsers, setListUsers] = useState<User[]>([]);
@@ -124,20 +133,27 @@ export default function UserManagementPage({ type }: { type: string }) {
                       key={user.id}
                       className="border border-border/60 rounded-xl p-4 flex flex-col gap-4 bg-white shadow-sm hover:shadow-md transition-all"
                     >
-                      {/* Header: avatar, name, email */}
-                      <div className="flex items-center gap-3">
-                        <Avatar className="border-foreground/10 border h-10 w-10">
-                          <AvatarImage src={avatarSrc} alt={fullName} />
-                        </Avatar>
-                        <div className="flex flex-col overflow-hidden">
-                          <span className="text-sm font-semibold truncate">
-                            {fullName || user.email}
-                          </span>
-                          {user.email && (
-                            <span className="text-[11px] text-muted-foreground truncate">
-                              {user.email}
+                      {/* Header: avatar, name, email, actions */}
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <Avatar className="border-foreground/10 border h-10 w-10">
+                            <AvatarImage src={avatarSrc} alt={fullName} />
+                          </Avatar>
+                          <div className="flex flex-col overflow-hidden">
+                            <span className="text-sm font-semibold truncate">
+                              {fullName || user.email}
                             </span>
-                          )}
+                            {user.email && (
+                              <span className="text-[11px] text-muted-foreground truncate">
+                                {user.email}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex flex-row items-end gap-1">
+                          <StatusBadge
+                            status={user.is_active ? "active" : "inactive"}
+                          />
                         </div>
                       </div>
 
@@ -154,17 +170,6 @@ export default function UserManagementPage({ type }: { type: string }) {
                           </Badge>
                         </div>
 
-                        {/* Status */}
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-1.5 text-muted-foreground">
-                            <Clock3 className="h-3 w-3" />
-                            <span>Status</span>
-                          </div>
-                          <StatusBadge
-                            status={user.is_active ? "active" : "inactive"}
-                          />
-                        </div>
-
                         {/* Created */}
                         <div className="flex items-center justify-between gap-2">
                           <div className="flex items-center gap-1.5 text-muted-foreground">
@@ -175,6 +180,21 @@ export default function UserManagementPage({ type }: { type: string }) {
                             {user.created_at
                               ? currentTimezone(user.created_at)
                               : "--"}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-1.5 text-muted-foreground">
+                            <SquarePen className="h-3 w-3" />
+                            <span>Actions</span>
+                          </div>
+                          <span className="text-xs font-medium text-right">
+                            <UserTableRowActions
+                              // @ts-ignore - we only need row.original inside actions
+                              row={{ original: user } as Row<User>}
+                              fetchUsers={fetchUsers}
+                              listRoles={listRoles}
+                            />
                           </span>
                         </div>
                       </div>
